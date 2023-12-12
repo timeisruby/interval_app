@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 32),
               child: Text(
-                "This is Idea App",
+                "This is Interval App",
                 style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,

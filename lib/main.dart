@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:interval/screen/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:interval/hjkim/screens/home_screen.dart';
+import 'package:interval/hjkim/provider/timer_provider.dart';
 import 'package:interval/screen/splash_screen.dart';
 
 void main() {
@@ -17,9 +19,13 @@ class MyApp extends StatelessWidget {
       title: "Interval",
       initialRoute: '/',
       routes: {
-        '/':(context) => SplashScreen(),
-        '/main':(context) => HomeScreen(),
+        '/': (context) => SplashScreen(),
+        '/main': (context) => HomeScreen(),
       },
+      home: ChangeNotifierProvider<TimerProvider>(
+        create: (context) => TimerProvider(),
+        child: HomeScreen(),
+      ),
     );
   }
 }

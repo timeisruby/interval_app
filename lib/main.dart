@@ -20,12 +20,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => SplashScreen(),
-        '/main': (context) => HomeScreen(),
+        '/main': (context) => ChangeNotifierProvider<TimerProvider>(
+              create: (context) => TimerProvider(),
+              child: HomeScreen(),
+            ),
       },
-      home: ChangeNotifierProvider<TimerProvider>(
-        create: (context) => TimerProvider(),
-        child: HomeScreen(),
-      ),
     );
   }
 }

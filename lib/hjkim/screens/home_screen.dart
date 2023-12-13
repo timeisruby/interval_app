@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:interval/hjkim//provider/timer_provider.dart';
+import 'package:interval/hjkim/provider/timer_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,7 +12,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     timer = Provider.of<TimerProvider>(context, listen: false);
   }
@@ -74,6 +73,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     : ElevatedButton(
                         onPressed: null,
                         child: Text('Continue'),
+                      ),
+                (timer.labEnable)
+                    ? ElevatedButton(
+                        onPressed: timer.labTimer,
+                        child: Text('Lab'),
+                      )
+                    : ElevatedButton(
+                        onPressed: null,
+                        child: Text('Lab'),
                       ),
               ],
             ),

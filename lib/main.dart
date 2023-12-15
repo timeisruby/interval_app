@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(context) => SplashScreen(),
-        '/main':(context) => TimerTwo(),
+        '/main':(context) => ClockApp(),
       },
     );
   }

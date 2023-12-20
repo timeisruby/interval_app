@@ -13,11 +13,17 @@ class TimerProvider with ChangeNotifier {
   bool _labEnable = false;
 
   int get hour => _hour;
+
   int get minute => _minute;
+
   int get seconds => _seconds;
+
   bool get startEnable => _startEnable;
+
   bool get stopEnable => _stopEnable;
+
   bool get continueEnable => _continueEnable;
+
   bool get labEnable => _labEnable;
 
   void startTimer() {
@@ -88,18 +94,24 @@ class TimerProvider with ChangeNotifier {
       _labEnable = false;
 
       _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_seconds < 59) {
-        _seconds++;
-      } else if (_seconds == 59) {
-        _seconds = 0;
-        if (_minute == 59) {
-          _hour++;
-          _minute = 0;
-        } else {
-          _minute++;
+        if (_seconds < 59) {
+          _seconds++;
+        } else if (_seconds == 59) {
+          _seconds = 0;
+          if (_minute == 59) {
+            _hour++;
+            _minute = 0;
+          } else {
+            _minute++;
+          }
         }
-      }
-      }
-    notifyListeners();
+        notifyListeners();
+      });
+    }
+  }
+
+  void labTimer() {
+    // 예시: 현재 타이머 상태를 출력하는 동작
+    print('Lab Timer - Hour: $_hour, Minute: $_minute, Seconds: $_seconds');
   }
 }

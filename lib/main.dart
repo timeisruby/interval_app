@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(context) => SplashScreen(),
-        '/main':(context) => TimerScreen(),
+        '/home':(context) => TimerScreen(),
       },
     );
   }

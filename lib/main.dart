@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:interval/screen/home_screen.dart';
 import 'package:interval/screen/splash_screen.dart';
-import 'package:interval/screen/timer_screen_2.dart';
+import 'package:interval/swchoi/screen/Timer_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(context) => SplashScreen(),
-        '/main':(context) => ClockApp(),
+        '/main':(context) => TimerScreen(),
       },
     );
   }

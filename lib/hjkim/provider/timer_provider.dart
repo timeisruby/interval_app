@@ -111,7 +111,6 @@ class TimerProvider with ChangeNotifier {
   }
 
   void labTimer() {
-    // 예시: 현재 타이머 상태를 출력하는 동작
     print('Lab Timer - Hour: $_hour, Minute: $_minute, Seconds: $_seconds');
   }
 }

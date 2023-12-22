@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:interval/hjkim/screens/home_screen.dart';
 import 'package:interval/hjkim/provider/timer_provider.dart';
 import 'package:interval/screen/splash_screen.dart';
+import 'package:interval/screen/home_screen.dart';
 import 'package:interval/swchoi/screen/Timer_screen.dart';
 
 void main() {
@@ -21,11 +22,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => SplashScreen(),
-        '/main': (context) => ChangeNotifierProvider<TimerProvider>(
+        '/home': (context) => MainScreen(),
+        '/hj': (context) => ChangeNotifierProvider<TimerProvider>(
               create: (context) => TimerProvider(),
               child: HomeScreen(),
             ),
-        '/home':(context) => TimerScreen(),
+        '/sw': (context) => TimerScreen(),
       },
     );
   }

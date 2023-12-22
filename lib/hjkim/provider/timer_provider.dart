@@ -17,14 +17,19 @@ class TimerProvider with ChangeNotifier {
   bool _resetEnable = false;
 
   int get hour => _hour;
+
   int get minute => _minute;
+
   int get seconds => _seconds;
   int get labHour => _labHour;
   int get labMinute => _labMinute;
   int get labSeconds => _labSeconds;
   bool get startEnable => _startEnable;
+
   bool get stopEnable => _stopEnable;
+
   bool get continueEnable => _continueEnable;
+
   bool get labEnable => _labEnable;
   bool get resetEnable => _resetEnable;
 

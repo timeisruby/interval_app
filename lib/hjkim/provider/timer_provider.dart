@@ -15,7 +15,7 @@ class TimerProvider with ChangeNotifier {
   bool _continueEnable = false;
   bool _labEnable = false;
   bool _resetEnable = false;
-  int _labIndex = 0;
+  int _labIndex = 1;
 
   int get hour => _hour;
   int get minute => _minute;
@@ -105,8 +105,13 @@ class TimerProvider with ChangeNotifier {
     _labHour = 0;
     _labMinute = 0;
     _labSeconds = 0;
-    _labIndex = 0;
+    _labIndex = 1;
     _resetEnable = false;
     notifyListeners();
+  }
+
+  set labIndex(int newIndex) {
+    _labIndex = newIndex;
+    notifyListeners(); // 변경 사항을 등록된 리스너에 통지
   }
 }

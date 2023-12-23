@@ -20,92 +20,107 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: homeScreenBody(),
+      body: Column(
+        children: [
+          homeScreenButton(timer),
+          labTimerIndex(timer),
+        ],
+      ),
     );
   }
+}
 
-  Widget homeScreenBody() {
-    return Container(child: Consumer<TimerProvider>(
-      builder: (context, timeprovider, widget) {
-        return Column(children: [
-          SizedBox(
-            height: 25,
-          ),
-          Center(
-            child: Text(
-              '${timer.hour} : ' + '${timer.minute} : ' + '${timer.seconds} ',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 40,
-              ),
+Widget homeScreenButton(dynamic timer) {
+  return Container(child: Consumer<TimerProvider>(
+    builder: (context, timeprovider, widget) {
+      return Column(children: [
+        SizedBox(
+          height: 25,
+        ),
+        Center(
+          child: Text(
+            '${timer.hour} : ' + '${timer.minute} : ' + '${timer.seconds} ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 40,
             ),
           ),
-          SizedBox(
-            height: 25,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              (timer.startEnable)
-                  ? ElevatedButton(
-                      onPressed: timer.startTimer,
-                      child: Text('Start'),
-                    )
-                  : ElevatedButton(
-                      onPressed: null,
-                      child: Text('Start'),
-                    ),
-              (timer.stopEnable)
-                  ? ElevatedButton(
-                      onPressed: timer.stopTimer,
-                      child: Text('Stop'),
-                    )
-                  : ElevatedButton(
-                      onPressed: null,
-                      child: Text('Stop'),
-                    ),
-              (timer.continueEnable)
-                  ? ElevatedButton(
-                      onPressed: timer.continueTimer,
-                      child: Text('Continue'),
-                    )
-                  : ElevatedButton(
-                      onPressed: null,
-                      child: Text('Continue'),
-                    ),
-              (timer.labEnable)
-                  ? ElevatedButton(
-                      onPressed: (timer.labEnable)
-                          ? timer.labTimer
-                          : (timer.resetEnable)
-                              ? timer.resetEnable
-                              : null,
-                      child: Text((timer.resetEnable) ? 'Reset' : 'Lab'),
-                    )
-                  : ElevatedButton(
-                      onPressed: null,
-                      child: Text('Lab'),
-                    ),
-            ],
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Row(
-            children: [
-              Text(
-                '${timer.labHour} : ' +
-                    '${timer.labMinute} : ' +
-                    '${timer.labSeconds} ',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                ),
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            (timer.startEnable)
+                ? ElevatedButton(
+                    onPressed: timer.startTimer,
+                    child: Text('Start'),
+                  )
+                : ElevatedButton(
+                    onPressed: null,
+                    child: Text('Start'),
+                  ),
+            (timer.stopEnable)
+                ? ElevatedButton(
+                    onPressed: timer.stopTimer,
+                    child: Text('Stop'),
+                  )
+                : ElevatedButton(
+                    onPressed: null,
+                    child: Text('Stop'),
+                  ),
+            (timer.continueEnable)
+                ? ElevatedButton(
+                    onPressed: timer.continueTimer,
+                    child: Text('Continue'),
+                  )
+                : ElevatedButton(
+                    onPressed: null,
+                    child: Text('Continue'),
+                  ),
+            ElevatedButton(
+              onPressed: (timer.labEnable)
+                  ? () {
+                      if (timer.labEnable) {
+                        timer.labTimer();
+                      } else if (timer.resetEnable) {
+                        timer.resetEnable();
+                      }
+                    }
+                  : (timer.resetEnable)
+                      ? () {
+                          timer.resetTimer();
+                        }
+                      : null,
+              child: Text((timer.resetEnable) ? 'Reset' : 'Lab'),
+            ),
+          ],
+        ),
+      ]);
+    },
+  ));
+}
+
+Widget labTimerIndex(dynamic timer) {
+  return Container(
+    child: Consumer<TimerProvider>(
+      builder: (context, timeprovider, widget) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 25,
+            ),
+            Text(
+              'Lab ${timer.labIndex}: ${timer.labHour} : ${timer.labMinute} : ${timer.labSeconds}',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
               ),
-            ],
-          ),
-        ]);
+            ),
+          ],
+        );
       },
-    ));
-  }
+    ),
+  );
 }

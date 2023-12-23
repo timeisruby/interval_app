@@ -15,6 +15,7 @@ class TimerProvider with ChangeNotifier {
   bool _continueEnable = false;
   bool _labEnable = false;
   bool _resetEnable = false;
+  int _labIndex = 0;
 
   int get hour => _hour;
   int get minute => _minute;
@@ -27,6 +28,7 @@ class TimerProvider with ChangeNotifier {
   bool get continueEnable => _continueEnable;
   bool get labEnable => _labEnable;
   bool get resetEnable => _resetEnable;
+  int get labIndex => _labIndex;
 
   void startTimer() {
     _hour = 0;
@@ -36,6 +38,7 @@ class TimerProvider with ChangeNotifier {
     _stopEnable = true;
     _continueEnable = false;
     _labEnable = true;
+    _resetEnable = false;
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_seconds < 59) {
@@ -60,6 +63,7 @@ class TimerProvider with ChangeNotifier {
       _continueEnable = true;
       _stopEnable = false;
       _labEnable = false;
+      _resetEnable = true;
       _timer.cancel();
     }
     notifyListeners();
@@ -70,6 +74,7 @@ class TimerProvider with ChangeNotifier {
     _stopEnable = true;
     _continueEnable = false;
     _labEnable = true;
+    _resetEnable = false;
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_seconds < 59) {
@@ -89,18 +94,19 @@ class TimerProvider with ChangeNotifier {
   }
 
   void labTimer() {
-    if (_resetEnable == false) {
-      _resetEnable = true;
-    }
     _labHour = _hour;
     _labMinute = _minute;
     _labSeconds = _seconds;
+    _labIndex++;
     notifyListeners();
   }
 
-  void ResetTimer() {
+  void resetTimer() {
     _labHour = 0;
     _labMinute = 0;
     _labSeconds = 0;
+    _labIndex = 0;
+    _resetEnable = false;
+    notifyListeners();
   }
 }

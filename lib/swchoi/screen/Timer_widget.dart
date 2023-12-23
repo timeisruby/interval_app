@@ -40,13 +40,9 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   void _resetTimer() {
     setState(() {
-      if (!_isRunning) {
-        labTimer.clear();
-      } else {
-        labTimer.clear();
-        _milliseconds = 0;
-        _isRunning = false;
-      }
+      labTimer.clear();
+      _milliseconds = 0;
+      _isRunning = false;
     });
   }
 
@@ -66,10 +62,11 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   String formatTimer(int milliseconds) {
     Duration duration = Duration(milliseconds: milliseconds);
+    int millisecond = duration.inMilliseconds % 1000 ~/ 10;
     int seconds = duration.inSeconds % 60;
     int minutes = (duration.inMinutes % 60);
-    int hours = duration.inHours;
-    return "${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+
+    return "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}:${millisecond.toString().padLeft(2, '0')}";
   }
 
   @override
@@ -80,13 +77,16 @@ class _TimerWidgetState extends State<TimerWidget> {
         Container(
           child: Text(
             _formatTimer,
-            style: TextStyle(fontSize: 70),
+            style: TextStyle(fontSize: 70, color: Colors.white),
           ),
         ),
         Container(
+            margin: EdgeInsets.symmetric(horizontal: 25.0),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.white, width: 1.0))),
             child: buildButton(
                 _startStopTimer, _resetTimer, _labTimer, _isRunning)),
-        SizedBox(height: 30),
         Container(
           height: 200,
           child: Scrollbar(
@@ -95,10 +95,20 @@ class _TimerWidgetState extends State<TimerWidget> {
               controller: _controller,
               itemCount: labTimer.length,
               itemBuilder: (context, index) {
-                Color itemColor = _isScrolling ? Colors.blue : Colors.red;
                 return Container(
-                  color: itemColor,
-                  child: Text("${labTimer[index]}"),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(color: Colors.white, width: 1.0))),
+                  margin: EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("랩 ${index + 1}",
+                          style: TextStyle(fontSize: 25, color: Colors.white)),
+                      Text("${labTimer[index]}",
+                          style: TextStyle(fontSize: 25, color: Colors.white)),
+                    ],
+                  ),
                 );
               },
             ),
@@ -111,33 +121,35 @@ class _TimerWidgetState extends State<TimerWidget> {
 
 Widget buildButton(VoidCallback startStopCallback, VoidCallback resetCallback,
     VoidCallback labTimerCallback, bool isRunning) {
+  double buttonSize = 100.0; // 버튼 크기를 조절할 값
   return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
-      ElevatedButton(
+      RawMaterialButton(
+          onPressed: isRunning ? labTimerCallback : resetCallback,
+          shape: CircleBorder(),
+          elevation: 2.0,
+          fillColor: Colors.grey.withOpacity(0.4),
+          constraints:
+              BoxConstraints.tightFor(width: buttonSize, height: buttonSize),
+          child: isRunning
+              ? Text("Lab", style: TextStyle(fontSize: 20, color: Colors.white))
+              : Text("Reset",
+                  style: TextStyle(fontSize: 20, color: Colors.white.withOpacity(0.4)))),
+      RawMaterialButton(
         onPressed: startStopCallback,
-        style: customButtonStyle.copyWith(
-            backgroundColor: MaterialStateProperty.all(Colors.white),
-            foregroundColor: MaterialStateProperty.all(Colors.black)),
-        child: isRunning ? Text("Stop") : Text("Start"),
+        shape: CircleBorder(),
+        elevation: 2.0,
+        fillColor: isRunning
+            ? Colors.red.withOpacity(0.4)
+            : Colors.green.withOpacity(0.4),
+        constraints:
+            BoxConstraints.tightFor(width: buttonSize, height: buttonSize),
+        child: isRunning
+            ? Text("Stop", style: TextStyle(fontSize: 20, color: Colors.red))
+            : Text("Start",
+                style: TextStyle(fontSize: 20, color: Colors.green)),
       ),
-      SizedBox(width: 30),
-      ElevatedButton(
-        onPressed: resetCallback,
-        style: customButtonStyle.copyWith(
-          backgroundColor: MaterialStateProperty.all(Colors.white),
-          foregroundColor: MaterialStateProperty.all(Colors.black),
-        ),
-        child: Text("Reset"),
-      ),
-      SizedBox(width: 30),
-      ElevatedButton(
-        onPressed: labTimerCallback,
-        style: customButtonStyle.copyWith(
-            backgroundColor: MaterialStateProperty.all(Colors.white),
-            foregroundColor: MaterialStateProperty.all(Colors.black)),
-        child: Text("Lab"),
-      )
     ],
   );
 }

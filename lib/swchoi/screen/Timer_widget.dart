@@ -88,6 +88,21 @@ class _TimerWidgetState extends State<TimerWidget> {
             child: buildButton(
                 _startStopTimer, _resetTimer, _labTimer, _isRunning)),
         Container(
+          margin: EdgeInsets.symmetric(horizontal: 25.0),
+          decoration: BoxDecoration(
+              border:
+                  Border(bottom: BorderSide(color: Colors.white, width: 1.0))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("랩 ${labTimer.length + 1}",
+                  style: TextStyle(fontSize: 25, color: Colors.white)),
+              Text(_formatTimer,
+                  style: TextStyle(fontSize: 25, color: Colors.white)),
+            ],
+          ),
+        ),
+        Container(
           height: 200,
           child: Scrollbar(
             child: ListView.builder(
@@ -98,12 +113,12 @@ class _TimerWidgetState extends State<TimerWidget> {
                 return Container(
                   decoration: BoxDecoration(
                       border: Border(
-                          bottom: BorderSide(color: Colors.white, width: 1.0))),
+                          bottom: BorderSide(color: Colors.white, width: 2.0))),
                   margin: EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("랩 ${index + 1}",
+                      Text("랩 ${labTimer.length - index}",
                           style: TextStyle(fontSize: 25, color: Colors.white)),
                       Text("${labTimer[index]}",
                           style: TextStyle(fontSize: 25, color: Colors.white)),
@@ -135,7 +150,8 @@ Widget buildButton(VoidCallback startStopCallback, VoidCallback resetCallback,
           child: isRunning
               ? Text("Lab", style: TextStyle(fontSize: 20, color: Colors.white))
               : Text("Reset",
-                  style: TextStyle(fontSize: 20, color: Colors.white.withOpacity(0.4)))),
+                  style: TextStyle(
+                      fontSize: 20, color: Colors.white.withOpacity(0.4)))),
       RawMaterialButton(
         onPressed: startStopCallback,
         shape: CircleBorder(),

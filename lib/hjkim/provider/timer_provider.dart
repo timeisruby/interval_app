@@ -7,9 +7,7 @@ class TimerProvider with ChangeNotifier {
   int _hour = 0;
   int _minute = 0;
   int _seconds = 0;
-  int _labHour = 0;
-  int _labMinute = 0;
-  int _labSeconds = 0;
+  List<Map<String, int>> _labTimes = [];
   bool _startEnable = true;
   bool _stopEnable = false;
   bool _continueEnable = false;
@@ -20,9 +18,7 @@ class TimerProvider with ChangeNotifier {
   int get hour => _hour;
   int get minute => _minute;
   int get seconds => _seconds;
-  int get labHour => _labHour;
-  int get labMinute => _labMinute;
-  int get labSeconds => _labSeconds;
+  List<Map<String, int>> get labTimes => _labTimes;
   bool get startEnable => _startEnable;
   bool get stopEnable => _stopEnable;
   bool get continueEnable => _continueEnable;
@@ -94,24 +90,27 @@ class TimerProvider with ChangeNotifier {
   }
 
   void labTimer() {
-    _labHour = _hour;
-    _labMinute = _minute;
-    _labSeconds = _seconds;
     _labIndex++;
+    int labHour = _hour;
+    int labMinute = _minute;
+    int labSeconds = _seconds;
+
+    // 현재 Lab의 시간 값을 기록
+    _labTimes
+        .add({'hour': labHour, 'minute': labMinute, 'seconds': labSeconds});
+
     notifyListeners();
   }
 
   void resetTimer() {
-    _labHour = 0;
-    _labMinute = 0;
-    _labSeconds = 0;
     _labIndex = 1;
+    _labTimes.clear();
     _resetEnable = false;
     notifyListeners();
   }
 
   set labIndex(int newIndex) {
     _labIndex = newIndex;
-    notifyListeners(); // 변경 사항을 등록된 리스너에 통지
+    notifyListeners();
   }
 }

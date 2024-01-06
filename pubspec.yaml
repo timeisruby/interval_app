@@ -49,7 +49,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   intl: ^0.17.0
-
+  http: ^1.1.2
+  flutter_local_notifications: ^8.2.0
 flutter:
 
   # The following line ensures that the Material Icons font is

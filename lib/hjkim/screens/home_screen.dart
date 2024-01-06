@@ -16,15 +16,39 @@ class _HomeScreenState extends State<HomeScreen> {
     timer = Provider.of<TimerProvider>(context, listen: false);
   }
 
+  void labButtonPressed() {
+    // 다음 인덱스로 업데이트
+    timer.labTimer();
+    setState(() {});
+  }
+
+  void labButtonResetPressed() {
+    // 다음 인덱스로 업데이트
+    timer.resetEnable();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: homeScreenBody(),
+      body: Column(
+        children: [
+          homeScreenButton(timer),
+          Expanded(
+            child: ListView.builder(
+              itemCount: timer.labIndex,
+              itemBuilder: (context, index) {
+                return labTimerIndexWithIndex(timer, index + 1);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget homeScreenBody() {
+  Widget homeScreenButton(dynamic timer) {
     return Container(child: Consumer<TimerProvider>(
       builder: (context, timeprovider, widget) {
         return Column(children: [
@@ -73,39 +97,56 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: null,
                       child: Text('Continue'),
                     ),
-              (timer.labEnable)
-                  ? ElevatedButton(
-                      onPressed: (timer.labEnable)
-                          ? timer.labTimer
-                          : (timer.resetEnable)
-                              ? timer.resetEnable
-                              : null,
-                      child: Text((timer.resetEnable) ? 'Reset' : 'Lab'),
-                    )
-                  : ElevatedButton(
-                      onPressed: null,
-                      child: Text('Lab'),
-                    ),
-            ],
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Row(
-            children: [
-              Text(
-                '${timer.labHour} : ' +
-                    '${timer.labMinute} : ' +
-                    '${timer.labSeconds} ',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                ),
+              ElevatedButton(
+                onPressed: (timer.labEnable)
+                    ? () {
+                        if (timer.labEnable) {
+                          labButtonPressed();
+                        } else if (timer.resetEnable) {
+                          labButtonResetPressed();
+                        }
+                      }
+                    : (timer.resetEnable)
+                        ? () {
+                            timer.resetTimer();
+                          }
+                        : null,
+                child: Text((timer.resetEnable) ? 'Reset' : 'Lab'),
               ),
             ],
           ),
         ]);
       },
     ));
+  }
+
+  Widget labTimerIndexWithIndex(dynamic timer, int labIndex) {
+    return Container(
+      child: Consumer<TimerProvider>(
+        builder: (context, timeprovider, widget) {
+          // 여기서 변경
+          if (labIndex <= timer.labTimes.length) {
+            final labTime = timer.labTimes[labIndex - 1];
+            return Column(
+              children: [
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  'Lab $labIndex: ${labTime['hour']} : ${labTime['minute']} : ${labTime['seconds']}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            );
+          } else {
+            // 인덱스가 범위를 벗어나는 경우 처리
+            return Container();
+          }
+        },
+      ),
+    );
   }
 }

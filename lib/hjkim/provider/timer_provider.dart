@@ -7,26 +7,24 @@ class TimerProvider with ChangeNotifier {
   int _hour = 0;
   int _minute = 0;
   int _seconds = 0;
-  int _labHour = 0;
-  int _labMinute = 0;
-  int _labSeconds = 0;
+  List<Map<String, int>> _labTimes = [];
   bool _startEnable = true;
   bool _stopEnable = false;
   bool _continueEnable = false;
   bool _labEnable = false;
   bool _resetEnable = false;
+  int _labIndex = 1;
 
   int get hour => _hour;
   int get minute => _minute;
   int get seconds => _seconds;
-  int get labHour => _labHour;
-  int get labMinute => _labMinute;
-  int get labSeconds => _labSeconds;
+  List<Map<String, int>> get labTimes => _labTimes;
   bool get startEnable => _startEnable;
   bool get stopEnable => _stopEnable;
   bool get continueEnable => _continueEnable;
   bool get labEnable => _labEnable;
   bool get resetEnable => _resetEnable;
+  int get labIndex => _labIndex;
 
   void startTimer() {
     _hour = 0;
@@ -36,6 +34,7 @@ class TimerProvider with ChangeNotifier {
     _stopEnable = true;
     _continueEnable = false;
     _labEnable = true;
+    _resetEnable = false;
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_seconds < 59) {
@@ -60,6 +59,7 @@ class TimerProvider with ChangeNotifier {
       _continueEnable = true;
       _stopEnable = false;
       _labEnable = false;
+      _resetEnable = true;
       _timer.cancel();
     }
     notifyListeners();
@@ -70,6 +70,7 @@ class TimerProvider with ChangeNotifier {
     _stopEnable = true;
     _continueEnable = false;
     _labEnable = true;
+    _resetEnable = false;
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_seconds < 59) {
@@ -89,18 +90,27 @@ class TimerProvider with ChangeNotifier {
   }
 
   void labTimer() {
-    if (_resetEnable == false) {
-      _resetEnable = true;
-    }
-    _labHour = _hour;
-    _labMinute = _minute;
-    _labSeconds = _seconds;
+    _labIndex++;
+    int labHour = _hour;
+    int labMinute = _minute;
+    int labSeconds = _seconds;
+
+    // 현재 Lab의 시간 값을 기록
+    _labTimes
+        .add({'hour': labHour, 'minute': labMinute, 'seconds': labSeconds});
+
     notifyListeners();
   }
 
-  void ResetTimer() {
-    _labHour = 0;
-    _labMinute = 0;
-    _labSeconds = 0;
+  void resetTimer() {
+    _labIndex = 1;
+    _labTimes.clear();
+    _resetEnable = false;
+    notifyListeners();
+  }
+
+  set labIndex(int newIndex) {
+    _labIndex = newIndex;
+    notifyListeners();
   }
 }
